@@ -1,0 +1,28 @@
+.item{
+    font-size: 18px;
+    
+}
+.output{
+    display: flex;
+    border: 1px solid;
+    margin-top: 10px;
+    padding: 5px;
+}
+.delBtn{
+    padding: 5px;
+    background-color: rgb(168, 10, 10);
+    margin-left: 150px;
+    color: oldlace;
+}
+
+.editStyle{
+    width: 150px;
+}
+
+td{
+    color: lightgray;
+}
+
+thead{
+    color: white;
+}

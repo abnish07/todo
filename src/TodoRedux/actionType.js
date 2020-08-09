@@ -1,0 +1,8 @@
+
+export const ADD_TO_TODO = "ADD_TO_TODO"
+export const DELETE_TODO = "DELETE_TODO"
+export const EDIT_ITEM = "EDIT_ITEM"
+export const UPDATE_ITEM = "UPDATE_ITEM"
+export const TOGGLE_COMPLETE = "TOGGLE_COMPLETE"
+export const COMPLETED_TASK ="COMPLETED_TASK"
+export const DELETE_COMPLETED_TASK= 'DELETE_COMPLETED_TASK'
