@@ -1,13 +1,14 @@
 import {
-    ADD_TO_TODO, DELETE_TODO,COMPLETED_TASK, DELETE_COMPLETED_TASK, EDIT_ITEM, UPDATE_ITEM, TOGGLE_COMPLETE} from './actionType';
+    ADD_TO_TODO, DELETE_TODO,COMPLETED_TASK, DELETE_COMPLETED_TASK, EDIT_ITEM, HANDLE_UPDATE, TOGGLE_COMPLETE} from './actionType';
 import { loadData, saveData } from './localStorage'
 import { v4 as uuidv4 } from 'uuid';
+import { handleUpdate } from './action';
 
 const initState= ({
     isLoading: false,
     todo:loadData("task") ||[],
     completedItem:[],
-    isEditing: false
+    isUpdate: false
 })
 
 const reducer = (state=initState, {type, payload})=>{
@@ -19,7 +20,8 @@ const reducer = (state=initState, {type, payload})=>{
             saveData("task", data)
             return ({
                 ...state,
-                todo: [...state.todo, payload]
+                todo: [...state.todo, payload],
+                isUpdate: false
             })
             
         case DELETE_TODO:
@@ -28,26 +30,23 @@ const reducer = (state=initState, {type, payload})=>{
             saveData("task", updatedItem)
             return ({
                 ...state,
-                todo: updatedItem
+                todo: updatedItem,
+                isUpdate: false
             })
 
-        // case EDIT_ITEM:
-        //     let editItem = state.todo
-        //     let updatedItem = delItem.filter((item)=>item.id!=payload)
-        //     saveData("task", updatedItem)
-        //     return ({
-        //         ...state,
-        //         todo: updatedItem
-        //     })
-
-        // case UPDATE_ITEM:
-        //     let updateItem = state.todo
-        //     let newUpdatedItem = updateItem.find((item)=>item.id===payload)
-        //     saveData("task", newUpdatedItem)
-        //     return ({
-        //         ...state,
-        //         todo: newUpdatedItem
-        //     })
+        case HANDLE_UPDATE:
+            let updateItem = [...state.todo]
+            let newUpdatedItem = updateItem.filter((item)=>item.id===payload.id?(
+                    item.item = payload.newItem,
+                    item.price = payload.newPrice,
+                    item.id = payload.id
+            ):true)
+            saveData("task", newUpdatedItem)
+            return ({
+                ...state,
+                todo: newUpdatedItem,
+                isUpdate: true
+            })
 
         case DELETE_COMPLETED_TASK:
             let compItem = state.completedItem
@@ -55,7 +54,8 @@ const reducer = (state=initState, {type, payload})=>{
             // saveData("task", updatedItem)
             return ({
                 ...state,
-                completedItem: updatedNewItem
+                completedItem: updatedNewItem,
+                isUpdate: false
             })
 
         case COMPLETED_TASK:
@@ -67,7 +67,8 @@ const reducer = (state=initState, {type, payload})=>{
             return ({
                 ...state,
                 completedItem:[...state.completedItem, completeItems],
-                todo: updatedTodo
+                todo: updatedTodo,
+                isUpdate: false
             })
 
         case TOGGLE_COMPLETE:
@@ -77,7 +78,8 @@ const reducer = (state=initState, {type, payload})=>{
             return ({
                 ...state,
                 todo: [...state.todo, toggleItems],
-                completedItem: filteredItems
+                completedItem: filteredItems,
+                isUpdate: false
             })
             default:
                 return state;
