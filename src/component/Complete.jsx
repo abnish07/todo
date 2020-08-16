@@ -18,6 +18,7 @@ class Complete extends React.Component {
                    <table class="table table-hover">
                     <thead>
                         <tr>
+                            <th scope="col">Complete</th>
                             <th scope="col">Item</th>
                             <th scope="col">Price</th>
                             <th scope="col" colSpan="2" className="text-center">Action</th>
@@ -26,9 +27,9 @@ class Complete extends React.Component {
                     <tbody>
                             {completedTask?.map(item=>(
                                 <tr key={item.id}>
-                                    <td><input type="checkbox" 
+                                    <td><input type="checkbox" checked      
                                     onChange={()=>toggleComplete(item.id)} /></td>
-                                    <td>{item.item} </td>
+                                    <td style={{textDecorationLine: 'line-through', color: "greenYellow"}}>{item.item} </td>
                                     <td>{item.price} </td>
                                     <td><button className="btn btn-danger" onClick={()=>deleteCompletedTask(item.id)}>
                                         Delete</button></td>
@@ -41,6 +42,8 @@ class Complete extends React.Component {
     }
 }
 
+
+
 const mapStateToProps=(state)=>({
     completedTask: state.todoReducer.completedItem
 })
@@ -49,5 +52,11 @@ const mapDispatchToProps=(dispatch)=>({
     deleteCompletedTask: (itemId)=>dispatch(deleteCompletedTask(itemId)),
     toggleComplete: (id)=>dispatch(toggleComplete(id))
 })
+
+
+// const lineThrough={
+//     textDecoration: lineThrough
+    
+// }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Complete)
